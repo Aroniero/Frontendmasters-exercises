@@ -44,7 +44,7 @@ var deepJS = {
 
 		records.forEach(this.printRecord);
 	},
-
+ 
 	sortByNameAsc(record1, record2) {
 		if (record1.name < record2.name) return -1;
 		else if (record1.name > record2.name) return 1;
