@@ -1,10 +1,21 @@
-function upper(strings,...values) {}
+function upper(strings, ...values) {
+  let s = "";
+
+  for (let i = 0; i < strings.length; i++) {
+    if (i > 0) {
+      s += String(values[i - 1].toUpperCase());
+    }
+    s += strings[i];
+  }
+
+  return s;
+}
 
 var name = "kyle",
-	twitter = "getify",
-	topic = "JS Recent Parts";
+  twitter = "getify",
+  topic = "JS Recent Parts";
 
 console.log(
-	`Hello ____ (@____), welcome to ____!` ===
-	"Hello KYLE (@GETIFY), welcome to JS RECENT PARTS!"
+  upper`Hello ${name} (@${twitter}), welcome to ${topic}!` ===
+    "Hello KYLE (@GETIFY), welcome to JS RECENT PARTS!"
 );
