@@ -60,7 +60,7 @@ Function.prototype.__proto__ // Object.prototype {hasOwnProperty: FUNCTION}
 	-- first it looks for multiplyBy2 and it finds it 
 	-- we dont see toString() method on this object so it is going to look for this function in Function.prototype object.
 3) multiplyBy2. <span style="color: #feb236">hasOwnProperty</span>("score")
-	-- first it looks for multiplyBy2 and it finds it 
+	-- first it looks for function multiplyBy2 definition and it finds it 
 	-- and it looks for <span style="color: #feb236">hasOwnProperty</span> and it doesnt find it. But  _ _ _proto_ _ _  is refrencing to Function.prototype
 		multiplyBy2: { 
 			prototype: { }
@@ -77,4 +77,4 @@ Function.prototype.__proto__ // Object.prototype {hasOwnProperty: FUNCTION}
 				 }
 		  }
 
---
+ 
