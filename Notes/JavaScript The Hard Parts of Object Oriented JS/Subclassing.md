@@ -243,5 +243,115 @@ EC returns	paidUser1 =  {
          <span style="color: #fff731">paidUserCreator</span> _ _ proto _ _  which is refering to <span style="color: #feb236">userCreator</span>. In <span style="color: #feb236">userCreator.prototype</span> he finds sayName() and 
         execute it.
 
-<span style="color: #feb236">dasdas </span>
+
+
+# Subclassing Solution 4 - ES2015 Class approach
+
+```javascript
+class userCreator(name, score){
+	constructor{ 
+      this.name = name;
+      this.score = score;
+	}
+    sayName() {
+        console.log("I'm "+ this.name);
+	}
+    increment(){
+        this.score++;
+    }
+}
+
+const user1 = new userCreator("Phil, 5");
+const user2 = new userCreator("Tim, 4");
+
+user1.sayName();
+```
+
+1) <span style="color: #feb236">userCreator</span>: *function* <------------- constructor
+			+
+	 { 
+		<span style="color: #feb236">prototype</span>: {
+			sayName: *function*
+			increment: *function*
+		}
+	}
+2) user1 : ......... <-------- now its uninitialized 
+	user1 = <span style="color: #54a0ff">new</span> userCreator("Phil, 4");
+														**Creating a New Execution Context**	
+<span style="color: #54a0ff">Everything in this color is automizied by *new* keyword </span>
+
+|                                                              | memory                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <span style="color: #54a0ff">1) this : {  }<br />2) setting hidden property: _ _ proto _ _ inside this<br />3) returning object to the global </span> | name : "Phill"<br />score : 4<br /><span style="color: #54a0ff">this : {</span><br />            name : "Phil",<br />            score: 4,<br />            <span style="color: #54a0ff">_ _ proto _ _ <br />}</span> |
+
+EC returns	user1 =  {  
+							name : "Phil",
+							score: 5,
+							_ _ proto _ _ :  				<--- this has bond to <span style="color: #feb236">prototype</span> functions of <span style="color: #feb236">userCreator</span>
+						}
+
+3) user1.sayName()
+	-- first it looks for user1 and it finds it in global memory (look at point 2, its object)
+	-- next he looks for sayName method in user1 but he cant find it in this object, so he check it in his 
+		_ _ proto _ _ which is refering to <span style="color: #feb236">userCreator</span>. In <span style="color: #feb236">userCreator</span> he finds sayName() method and 
+		execute it. 
+
+```javascript
+class paidUserCreator extends userCreator {
+	constructor (paidName, paidScore, accountBalance) {
+        super(paidName, paidScore);
+        this.accountBalance = accountBalance;
+    } 
+    increaseBalance() { 
+		this.accountBalance++;
+	}
+}
+
+const paidUser1 = new paidUserCreator("Alyssa", 8, 25);
+paidUser1.increaseBalance();
+paidUser1.sayName();
+```
+
+4) <span style="color: #fff731">paidUserCreator</span>: *function* <------------- constructor
+					+
+		{  
+			<span style="color: #fff731">prototype</span>: {
+				increaseBalance: *function*					<--------- line 6
+				<span style="color: #F83E7F">_ _ proto _ _</span> : 		<--- because of line <span style="color: #F83E7F">1 (extends)</span> we create bond to <span style="color: #feb236">prototype</span> of <span style="color: #feb236">userCreator</span>
+			}
+			 <span style="color: #F83E7F"> _ _ proto _ _</span> : <span style="color: #feb236">userCreator</span> <-------- by using <span style="color: #F83E7F">super()</span> makes to run <span style="color: #feb236">userCreator</span> itself
+		}
+
+ <span style="color: #F83E7F"> This stuff is made by extend, 1 part is creating link to <span style="color: #feb236">prototype</span> ,  and second is running <span style="color: #feb236">userCreator</span>  itself</span>
+
+5) paidUser1 : ......... <-------- now its uninitialized  
+	 paidUser1 = <span style="color: #54a0ff">new</span> <span style="color: #fff731">paidUserCreator</span>("Alyssa", 8, 25)
+													**Creating a New Execution Context**	
+<span style="color: #54a0ff">Everything in this color is automizied by *new* keyword </span>
+
+|                                                              | Local Memory:                                                |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <br /><br /> <span style="color: #54a0ff">this</span> = super('Alyssa', 8)<br /><span style="color: #54a0ff">this </span>= <span style="color: #F83E7F"> reflect.construct(<span style="color: #feb236">userCreator</span>,  (Alyssa, 8), paidUser1)</span><br /><span style="color: #54a0ff">this</span> = new <span style="color: #feb236">userCreator</span>('Alyssa', 8)<br /><br />**Creating a New Execution Context**:<br />                                         Local Memory:<br /> this.name = "Alyssa"       <br /> this.score = 8                  name : "Alyssa"<br />                                        score : 5<br /><span style="color: #54a0ff">this { <br /></span> name: "Alyssa",<br />score : 5<br /><span style="color: #54a0ff">_ _ proto _ _ :   <br /><------- has link to <span style="color: #fff731">paidUserCreator.prototype</span><br />}</span>:  <br /><br /><span style="color: #54a0ff">1) this : {  }<br />2) setting hidden property: _ _ proto _ _ inside this</span> <span style="color: #54a0ff">3) returning object to the global </span> | paidName : "Alyssa"<br />paidscore : 5<br />accountBalance : 25<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><span style="color: #54a0ff">this : <-- is uninitialized, so we have to use super()<br />{</span><br />   name : "Alyssa",<br />   score: 5,<br />   accountBalance : 25<br />   <span style="color: #54a0ff">_ _ proto _ _  <- <span style="color: #fff731">paidUserCreator.prototype</span><br />}</span><br /> |
+
+EC returns	paidUser1 =  {  
+							name : "Alyssa",
+							score: 5,
+							accountBalance : 25,
+							_ _ proto _ _ :  				<--- this has bond to <span style="color: #fff731">prototype</span> functions of <span style="color: #fff731">paidUserCreator</span>
+						}
+
+6) paidUser1.increaseBalance();
+	-- first it looks for paidUser1 and it finds it in global memory (look at point 5, its object)
+	-- next he looks for increaseBalance method in paidUser1 but he cant find it in this object, so he check it in his 
+		_ _ proto _ _ which is refering to <span style="color: #fff731">paidUserCreator</span>. In <span style="color: #fff731">paidUserCreator.prototype</span> he finds increaseBalance() method 
+		and execute it. 
+
+7) paidUser1.sayName();
+	-- first it looks for paidUser1 and it finds it in global memory (look at point 5, its object)
+	--next he looks for sayName() method in paidUser1 but he cant find it in this object, so he check it in his _ _ proto _ _ 
+       which is refering to <span style="color: #fff731">paidUserCreator</span>. In <span style="color: #fff731">paidUserCreator</span> he cant find sayName() method so JS is searching in
+         <span style="color: #fff731">paidUserCreator</span> _ _ proto _ _  which is refering to <span style="color: #feb236">userCreator</span>. In <span style="color: #feb236">userCreator.prototype</span> he finds sayName() and 
+        execute it.
+
+
 
