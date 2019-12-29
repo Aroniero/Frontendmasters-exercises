@@ -139,5 +139,109 @@ now otherObj : {
 	increment: *function*
 }
 
- 
+# Subclassing Solution 3 - Constructor (Pseudoclassical) approach
+
+```javascript
+function userCreator(name, score){
+	this.name = name;
+    this.score = score;
+}
+
+userCreator.prototype.sayName: function(){
+        console.log("I'm "+ this.name);
+}
+
+userCreator.prototype.increment: function(){
+        this.score++;
+}
+
+const user1 = new userCreator("Phil, 5");
+const user2 = new userCreator("Tim, 4");
+
+user1.sayName();
+```
+
+1) <span style="color: #feb236">userCreator</span>: *function* 
+			+
+	 { 
+		<span style="color: #feb236">prototype</span>: {
+			sayName: *function*
+			increment: *function*
+		}
+	}
+2) user1 : ......... <-------- now its uninitialized 
+user1 = new userCreator("Phil, 5");
+														**Creating a New Execution Context**	
+<span style="color: #54a0ff">Everything in this color is automizied by *new* keyword </span>
+
+|                                                              | memory                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <span style="color: #54a0ff">1) this : {  }<br />2) setting hidden property: _ _ proto _ _ inside this<br />3) returning object to the global </span> | name : "Phill"<br />score : 5<br /><span style="color: #54a0ff">this : {<br /><br />   name : "Phil",<br />score: 5,<br />_ _ proto _ _ <br />}</span> |
+
+EC returns	user1 =  {  
+							name : "Phil",
+							score: 5,
+							_ _ proto _ _ :  				<--- this has bond to <span style="color: #feb236">prototype</span> functions of userCreator
+						}
+
+3) user1.sayName()
+
+```javascript
+function paidUserCreator(paidName, paidScore, accountBalance){
+	userCreator.call(this, paidName, paidScore);
+	// userCreator.call(this, paidName, paidScore);
+	this.accountBalance = accountBalance;
+}
+
+paidUserFunctions.prototype = Object.create(userCreator.prototype)
+
+paidUserFunctions.prototype.increaseBalance: function(){
+		this.accountBalance++;
+	}
+};
+
+const paidUser1 = paidUserCreator("Alyssa", 8, 25);
+paidUser1.increaseBalance();
+paidUser1.sayName();
+```
+
+4) <span style="color: #fff731">paidUserCreator</span>: *function* 
+					+
+		{ 
+			<span style="color: #fff731">prototype</span>: {
+				increaseBalance: *function*					<--------- line 9
+				_ _ proto _ _ : 		<--- because of line 7 we create bond to <span style="color: #feb236">prototype</span> of <span style="color: #feb236">userCreator</span>
+			}
+		}
+
+5) paidUser1 : ......... <-------- now its uninitialized  
+	 paidUser1 = new paidUserCreator("Alyssa", 8, 25)
+													**Creating a New Execution Context**	
+<span style="color: #54a0ff">Everything in this color is automizied by *new* keyword </span>
+
+|                                                              | Local Memory:                                                |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <span style="color: #54a0ff">1) this : {  }<br />2) setting hidden property: _ _ proto _ _ inside this</span><br /><br /> userCreator.call(<span style="color: #54a0ff">this</span>, Alyssa, 8)<br />**Creating a New Execution Context**:<br />                                        Local Memory:<br /> this.name = "Alyssa"       <span style="color: #54a0ff">this</span>: -------------------------------><br /> this.score = 8                  name : "Alyssa"<br />                                        score : 5<br /><br /> <span style="color: #54a0ff">3) returning object to the global </span> | name : "Alyssa"<br />score : 5<br />accountBalance : 25<br /><br /><br /><br /><span style="color: #54a0ff">this : {</span><br />           name : "Alyssa",<br />           score: 5,<br />           accountBalance : 25<br />           <span style="color: #54a0ff">_ _ proto _ _  <br />}</span> |
+
+EC returns	paidUser1 =  {  
+							name : "Alyssa",
+							score: 5,
+							accountBalance : 25,
+							_ _ proto _ _ :  				<--- this has bond to <span style="color: #fff731">prototype</span> functions of <span style="color: #fff731">paidUserCreator</span>
+						}
+
+6) paidUser1.increaseBalance();
+	-- first it looks for paidUser1 and it finds it in global memory (look at point 5, its object)
+	-- next he looks for increaseBalance method in paidUser1 but he cant find it in this object, so he check it in his 
+		_ _ proto _ _ which is refering to <span style="color: #fff731">paidUserCreator</span>. In <span style="color: #fff731">paidUserCreator</span> he finds increaseBalance() method and 
+		execute it. 
+
+7) paidUser1.sayName();
+	-- first it looks for paidUser1 and it finds it in global memory (look at point 5, its object)
+	--next he looks for sayName() method in paidUser1 but he cant find it in this object, so he check it in his _ _ proto _ _ 
+       which is refering to <span style="color: #fff731">paidUserCreator</span>. In <span style="color: #fff731">paidUserCreator</span> he cant find sayName() method so JS is searching in
+         <span style="color: #fff731">paidUserCreator</span> _ _ proto _ _  which is refering to <span style="color: #feb236">userCreator</span>. In <span style="color: #feb236">userCreator.prototype</span> he finds sayName() and 
+        execute it.
+
+<span style="color: #feb236">dasdas </span>
 
