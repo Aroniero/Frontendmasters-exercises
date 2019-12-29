@@ -88,3 +88,56 @@ paidUser1  = {  <br />          name : "Alyssa"<br />          score: 8<br />   
        which is refering to <span style="color: #54a0ff">paidUserFunctions</span>. In <span style="color: #54a0ff">paidUserFunctions</span>  he cant find sayName() method so JS is searching in
          <span style="color: #54a0ff">paidUserFunctions</span>  _ _ proto _ _  which is refering to <span style="color: #feb236">userFunctions </span>. In <span style="color: #feb236">userFunctions </span> he finds sayName() and 
         execute it.
+
+# Interlude - We have another way of running a function that allow us to control the assignment of this
+
+```javascript
+const obj = {
+     num: 3,
+     increment: function(){this.num++;}
+};
+const otherObj = {
+ 	num: 10
+};
+obj.increment(); // obj.num now 4
+obj.increment.call(otherObj); // otherObj.num now 11
+// obj.increment.apply(otherObj);
+```
+
+this always refers to the object to the left of the dot on which the function (method) is being called - unless we override that by running the function using .call() or .apply() which lets us set the value of this inside of the increment function
+
+1) obj : {
+		num: 3,
+		increment: *function*
+	}
+2) otherObj : {
+		num: 10,
+	}
+3) obj.increment();
+	Creating a New Execution Context	
+
+|                              | memory           |
+| ---------------------------- | ---------------- |
+| this : num++<br />obj :num++ | this : obj<br /> |
+
+now obj : {
+	num: 4,
+	increment: *function*
+}
+
+4) obj.increment.call(otherObj);
+increment function (FUNCTION OBJECT COMBO) has _ _ proto _ _ inside so its linked to the Function.prototype where you can  find call() method
+
+Creating a New Execution Context	
+
+|                                    | memory          |
+| ---------------------------------- | --------------- |
+| this : num++<br />otherObj : num++ | this : otherObj |
+
+now otherObj : {
+	num: 4,
+	increment: *function*
+}
+
+ 
+
