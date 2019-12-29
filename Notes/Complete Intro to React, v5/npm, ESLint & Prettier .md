@@ -1,4 +1,4 @@
-# npm
+# [npm](https://btholt.github.io/complete-intro-to-react-v5/eslint-prettier) 
 
 1) First u have to check if u have node and npm:
 
@@ -31,7 +31,7 @@ it will give your a package.json, e.g.:
 
 ```
 
-# Prettier
+# [Prettier](https://btholt.github.io/complete-intro-to-react-v5/eslint-prettier)
 
 ```
 npm install -D prettier
@@ -65,7 +65,7 @@ in this file you have to create empty object and save it.
 
 Empty Object means that u want default settings of Prettier
 
-# ESLint 
+# [ESLint](https://btholt.github.io/complete-intro-to-react-v5/eslint-prettier)
 
 ```
 npm install -D eslint eslint-config-prettier
@@ -106,7 +106,7 @@ in package.json we are adding:
 
 Then we should install ESLint Dirk Baeumer from VSCode extensions
 
-# gitignore
+# [gitignore](https://btholt.github.io/complete-intro-to-react-v5/eslint-prettier)
 
 ```
 node_modules/
