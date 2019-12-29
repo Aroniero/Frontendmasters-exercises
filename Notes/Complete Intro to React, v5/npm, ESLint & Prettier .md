@@ -118,3 +118,45 @@ coverage/
 .env
 ```
 
+# [Parcel](https://btholt.github.io/complete-intro-to-react-v5/parcel)
+
+1) Install Parcel by doing `npm install -D parcel-bundler`
+
+2) Now inside of your `package.json` put:
+
+```json
+"scripts" {
+  "dev": "parcel src/index.html"
+}
+```
+
+3) after running `npm run dev` Parcel is creating dist and .cache folders (ignore it)
+
+4) We can enter to the website by http://localhost:1234/
+
+It is autorefreshing bundler, so if u press SHIFT+S it refreshes site automatically.
+
+5) To stop server from running just press `CTRL + C`
+
+# React
+
+Run `npm install react react-dom`. This will pull React and ReactDOM down from npm and put it in your node_modules directory. Now instead of loading them from unpkg, we can tell Parcel to include them in your main bundle. Let's do that now.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
