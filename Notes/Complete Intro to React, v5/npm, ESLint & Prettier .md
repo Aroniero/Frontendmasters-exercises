@@ -240,6 +240,40 @@ It is autorefreshing bundler, so if u press SHIFT+S it refreshes site automatica
 
 5) To stop server from running just press `CTRL + C`
 
+# Babel + Parcel configuration for Constructor
+
+The constructor is annoying. We can use something called class properties to make it a lot nicer and easier to ready. Class properties are an upcoming part of JavaScript so we need to tell Parcel to include that code transformation when it transpiles our code. We do that by making a [Babel](https://babeljs.io/) config file. Babel is the actual library that does the code transformation.
+
+```
+npm install -D babel-eslint @babel/core @babel/preset-env @babel/plugin-proposal-class-properties @babel/preset-react
+```
+
+Now make a file called `.babelrc` with the following:
+
+```json
+{
+  "presets": ["@babel/preset-react", "@babel/preset-env"],
+  "plugins": ["@babel/plugin-proposal-class-properties"]
+}
+```
+
+Add one line to the top level of your `.eslintrc.json`:
+
+```json
+{
+  …
+  "parser": "babel-eslint",
+  …
+}
+```
+
+Now with this, we can modify Details to be as so:
+
+```react
+// replace constructor
+state = { loading: true };
+```
+
 # React
 
 ```
