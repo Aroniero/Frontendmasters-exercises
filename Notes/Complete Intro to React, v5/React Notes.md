@@ -1,3 +1,5 @@
+[TOC]
+
 # Getting started with hooks
 
 Now we want to make it so you can modify what your search parameters are. Let's make a new route called SearchParams.js and have it accept these search parameters.
@@ -147,7 +149,9 @@ getDerivedStateFromProps does exactly what it sounds like: it allows you to acce
   }
 ```
 
+# Context
 
 
-# Context 
+
+# Redux
 
